@@ -55,26 +55,24 @@ async def monitor_handler(event):
     if not monitoring_active:
         return
 
-    sender = event.chat
-    sender_id = getattr(sender, 'id', None)
-    sender_username = getattr(sender, 'username', '').lower() if sender else ''
+    sender_id = event.chat_id  # مباشرةً نحصل على chat_id
 
     for channel_name in selected_channels:
         config = channels_config[channel_name]
-        config_username = config.get("username", "").lower()
-        config_bot = config.get("bot", "").lstrip('@').lower()
+        config_id = int(config["chat_id"])  # استخدمنا chat_id هنا بدل username
+        config_bot = config["bot"]
 
-        if sender_username not in [config_username, config_bot]:
+        if sender_id != config_id:
             continue
 
         match = re.findall(config["regex"], event.raw_text)
         if match:
             code = match[2] if config.get("pick_third") and len(match) >= 3 else match[0]
             try:
-                await client.send_message(config["bot"], code)
-                print(f"أُرسل الكود: {code} إلى {config['bot']}")
+                await client.send_message(config_bot, code)
+                print(f"أُرسل الكود: {code} إلى {config_bot}")
             except Exception as e:
-                print(f"خطأ عند إرسال الكود إلى {config['bot']}: {e}")
+                print(f"خطأ عند إرسال الكود إلى {config_bot}: {e}")
             break
 
 # رسالة الترحيب
