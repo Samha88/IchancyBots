@@ -1,0 +1,18 @@
+{
+  "ichancy_saw": {
+    "username": "ichancy_saw",
+    "regex": "\\b[a-zA-Z0-9]{8,12}\\b",
+    "bot": "@ichancy_saw_bot"
+  },
+  "captain_ichancy": {
+    "username": "captain_ichancy",
+    "regex": "\\b[a-zA-Z0-9]{6,12}\\b",
+    "bot": "@ichancy_captain_bot",
+    "pick_third": true
+  },
+  "super_bot": {
+    "username": "super_code_bot",
+    "regex": "\\b[A-Z0-9]{10,15}\\b",
+    "bot": "@code_receiver_bot"
+  }
+}
