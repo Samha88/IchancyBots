@@ -21,6 +21,7 @@ client = TelegramClient(session_name, api_id, api_hash)
 selected_channels = set()
 monitoring_active = False
 
+# معالجة أوامر المستخدم
 async def handle_user_commands(event):
     global selected_channels, monitoring_active
 
@@ -49,17 +50,21 @@ async def handle_user_commands(event):
         else:
             await event.respond("بعض القنوات غير صحيحة، تأكد من كتابتها بشكل دقيق.")
 
+# مراقبة الرسائل
 async def monitor_handler(event):
     if not monitoring_active:
         return
 
-    sender_username = getattr(event.chat, 'username', None)
-    if not sender_username:
-        return
+    sender = event.chat
+    sender_id = getattr(sender, 'id', None)
+    sender_username = getattr(sender, 'username', '').lower() if sender else ''
 
     for channel_name in selected_channels:
         config = channels_config[channel_name]
-        if sender_username != config["username"] and sender_username != config["bot"].lstrip('@'):
+        config_username = config.get("username", "").lower()
+        config_bot = config.get("bot", "").lstrip('@').lower()
+
+        if sender_username not in [config_username, config_bot]:
             continue
 
         match = re.findall(config["regex"], event.raw_text)
@@ -72,6 +77,7 @@ async def monitor_handler(event):
                 print(f"خطأ عند إرسال الكود إلى {config['bot']}: {e}")
             break
 
+# رسالة الترحيب
 @client.on(events.NewMessage(pattern='/start'))
 async def start_handler(event):
     if event.chat_id not in allowed_chat_ids:
@@ -83,6 +89,7 @@ async def start_handler(event):
         "ثم أرسل كلمة 's' لبدء المراقبة، أو 'st' لإيقافها."
     )
 
+# توجيه الرسائل
 @client.on(events.NewMessage)
 async def unified_handler(event):
     if event.chat_id in allowed_chat_ids:
@@ -90,14 +97,14 @@ async def unified_handler(event):
     elif monitoring_active:
         await monitor_handler(event)
 
-# Web service للتأكد أن السيرفر شغال
+# Web server
 async def handle(request):
     return web.Response(text="Bot is running!")
 
 app = web.Application()
 app.router.add_get("/", handle)
 
-# تشغيل البوت والسيرفر
+# التشغيل الكامل
 async def start_all():
     await client.start()
     print("Bot is running...")
