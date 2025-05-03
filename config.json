@@ -1,6 +1,6 @@
 {
   "ichancy_malaki": {
-    "username": "almalaki_ichancy_bot",
+    "username": "almalaki_ichancy",
     "regex": "\\b[a-zA-Z0-9]{8,12}\\b",
     "bot": "@almalaki_ichancy_bot"
   },
@@ -11,8 +11,8 @@
     "pick_third": true
   },
   "super_bot": {
-    "username": "super_code_bot",
+    "username": "almalaki_ichancy_bot",
     "regex": "\\b[A-Z0-9]{10,15}\\b",
-    "bot": "@code_receiver_bot"
+    "bot": "@almalaki_ichancy_bot"
   }
 }
