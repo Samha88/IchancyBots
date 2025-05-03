@@ -4,39 +4,25 @@ import json
 from telethon import TelegramClient, events
 from aiohttp import web
 
-# معلومات حساب تيليجرام
-api_id = 22707838
-api_hash = '7822c50291a41745fa5e0d63f21bbfb6'
-session_name = 'my_session'
-
-# المستخدم المسموح له
-allowed_chat_ids = {141117417}
-
 # تحميل إعدادات القنوات من ملف خارجي
-with open('config.json', 'r') as f:
+with open('channels_config.json', 'r') as f:
     channels_config = json.load(f)
 
+# معلومات حساب تيليجرام
+api_id = 29721100
+api_hash = '8e084daf57bd8ed1f6aded90f6ce4dac'
+session_name = 'my_session'
+
+# معرف المستخدم المسموح له بالتفاعل مع البوت
+allowed_chat_ids = {6431789509}  # ← معرفك الشخصي
+
+# تهيئة العميل
 client = TelegramClient(session_name, api_id, api_hash)
 selected_channels = set()
 monitoring_active = False
 
-@client.on(events.NewMessage(pattern='/start'))
-async def start_handler(event):
-    if event.chat_id not in allowed_chat_ids:
-        return
-    await event.respond(
-        "مرحباً! أرسل أسماء القنوات أو البوتات التي تريد مراقبتها، مفصولة بفاصلة.\n"
-        "مثال:\n"
-        "ichancy_saw, captain_ichancy\n\n"
-        "ثم أرسل 's' لبدء المراقبة، أو 'st' لإيقافها."
-    )
-
-@client.on(events.NewMessage)
 async def handle_user_commands(event):
     global selected_channels, monitoring_active
-
-    if event.chat_id not in allowed_chat_ids:
-        return
 
     message = event.raw_text.strip()
 
@@ -63,38 +49,55 @@ async def handle_user_commands(event):
         else:
             await event.respond("بعض القنوات غير صحيحة، تأكد من كتابتها بشكل دقيق.")
 
-@client.on(events.NewMessage)
 async def monitor_handler(event):
-    global monitoring_active
     if not monitoring_active:
+        return
+
+    sender_username = getattr(event.chat, 'username', None)
+    if not sender_username:
         return
 
     for channel_name in selected_channels:
         config = channels_config[channel_name]
-        if event.chat.username != config["username"]:
+        if sender_username != config["username"] and sender_username != config["bot"].lstrip('@'):
             continue
 
-        match = re.findall(config["regex"], event.message.message)
+        match = re.findall(config["regex"], event.raw_text)
         if match:
-            if config.get("pick_third") and len(match) >= 3:
-                code = match[2]
-            else:
-                code = match[0]
-
-            bot_username = config["bot"]
-
-            # إرسال الكود مباشرة للبوت
-            await client.send_message(bot_username, code)
-            print(f"تم إرسال الكود: {code} إلى {bot_username}")
+            code = match[2] if config.get("pick_third") and len(match) >= 3 else match[0]
+            try:
+                await client.send_message(config["bot"], code)
+                print(f"أُرسل الكود: {code} إلى {config['bot']}")
+            except Exception as e:
+                print(f"خطأ عند إرسال الكود إلى {config['bot']}: {e}")
             break
 
-# Web service
+@client.on(events.NewMessage(pattern='/start'))
+async def start_handler(event):
+    if event.chat_id not in allowed_chat_ids:
+        return
+    await event.respond(
+        "مرحباً! أرسل أسماء القنوات التي تريد مراقبتها، مفصولة بفاصلة.\n"
+        "مثال:\n"
+        "ichancy_saw, ichancyTheKing\n\n"
+        "ثم أرسل كلمة 's' لبدء المراقبة، أو 'st' لإيقافها."
+    )
+
+@client.on(events.NewMessage)
+async def unified_handler(event):
+    if event.chat_id in allowed_chat_ids:
+        await handle_user_commands(event)
+    elif monitoring_active:
+        await monitor_handler(event)
+
+# Web service للتأكد أن السيرفر شغال
 async def handle(request):
     return web.Response(text="Bot is running!")
 
 app = web.Application()
 app.router.add_get("/", handle)
 
+# تشغيل البوت والسيرفر
 async def start_all():
     await client.start()
     print("Bot is running...")
@@ -102,9 +105,9 @@ async def start_all():
 
     runner = web.AppRunner(app)
     await runner.setup()
-    site = web.TCPSite(runner, '0.0.0.0', 8081)
+    site = web.TCPSite(runner, '0.0.0.0', 8080)
     await site.start()
-    print("Web server is running on http://0.0.0.0:8081")
+    print("Web server is running on http://0.0.0.0:8080")
     await client_loop
 
 if __name__ == "__main__":
