@@ -9,12 +9,12 @@ with open('channels_config.json', 'r') as f:
     channels_config = json.load(f)
 
 # معلومات حساب تيليجرام
-api_id = 29721100
-api_hash = '8e084daf57bd8ed1f6aded90f6ce4dac'
+api_id = 22707838
+api_hash = '7822c50291a41745fa5e0d63f21bbfb6'
 session_name = 'my_session'
 
 # معرف المستخدم المسموح له بالتفاعل مع البوت
-allowed_chat_ids = {6431789509}  # ← معرفك الشخصي
+allowed_chat_ids = {141117417}  # ← معرفك الشخصي
 
 # تهيئة العميل
 client = TelegramClient(session_name, api_id, api_hash)
