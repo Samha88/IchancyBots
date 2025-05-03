@@ -25,12 +25,6 @@
     "regex": "\\b[a-zA-Z0-9]{5,}\\b",
     "bot": "@ichancy_dragon_bot"
   },
-  "captain_ichancy": {
-    "username": "captain_ichancy",
-    "regex": "\\b[a-zA-Z0-9]{6,12}\\b",
-    "bot": "@ichancy_captain_bot",
-    "pick_third": true
-  },
   "ichancy_": {
     "username": "basel2255",
     "regex": "\\b[a-zA-Z0-9]{5,}\\b",
@@ -39,6 +33,6 @@
   "Ichancy_King": {
     "username": "ichancyTheKing",
     "regex": "\\b[a-zA-Z0-9]{6,12}\\b",
-    "bot": "@Ichancy_TheKingBot",
+    "bot": "@Ichancy_TheKingBot"
   }
 }
