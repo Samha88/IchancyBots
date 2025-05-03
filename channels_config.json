@@ -21,7 +21,7 @@
     "bot": "@DiamondIchancyBot"
   },
   "ichancy_dragon": {
-    "username": "sam91uyy",
+    "username": "sam91uyy1",
     "regex": "\\b[a-zA-Z0-9]{5,}\\b",
     "bot": "@ichancy_dragon_bot"
   },
