@@ -1,8 +1,8 @@
 {
-  "ichancy_saw": {
-    "username": "ichancy_saw",
+  "ichancy_malaki": {
+    "username": "almalaki_ichancy_bot",
     "regex": "\\b[a-zA-Z0-9]{8,12}\\b",
-    "bot": "@ichancy_saw_bot"
+    "bot": "@almalaki_ichancy_bot"
   },
   "captain_ichancy": {
     "username": "captain_ichancy",
