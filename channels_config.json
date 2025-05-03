@@ -1,37 +1,27 @@
 {
   "ichancy_malaki": {
-    "chat_id": "2680635160",
+    "chat_id": 2680635160,
     "regex": "\\b[a-zA-Z0-9]{8,12}\\b",
     "bot": "@almalaki_ichancy_bot"
   },
   "captain_ichancy": {
-    "chat_id": "2199003618",
+    "chat_id": 2199003618,
     "regex": "\\b[a-zA-Z0-9]{6,12}\\b",
     "bot": "@ichancy_captain_bot",
     "pick_third": true
   },
-  "super_bot": {
-    "chat_id": "7233675590",
-    "regex": "\\b[A-Z0-9]{10,15}\\b",
-    "bot": "@almalaki_ichancy_bot"
-  },
   "ichancy_diamond": {
-    "chat_id": "7671323441",
+    "chat_id": 7671323441,
     "regex": "\\b[a-zA-Z0-9]{8,12}\\b",
     "bot": "@DiamondIchancyBot"
   },
   "ichancy_dragon": {
-    "chat_id": "2169021286",
+    "chat_id": 2169021286,
     "regex": "\\b[a-zA-Z0-9]{5,}\\b",
     "bot": "@ichancy_dragon_bot"
   },
-  "ichancy_": {
-    "chat_id": "2115470972",
-    "regex": "\\b[a-zA-Z0-9]{5,}\\b",
-    "bot": "@Ichancy_basel_bot"
-  },
   "Ichancy_King": {
-    "chat_id": "2176585065",
+    "chat_id": 2176585065,
     "regex": "\\b[a-zA-Z0-9]{6,12}\\b",
     "bot": "@Ichancy_TheKingBot"
   }
