@@ -12,7 +12,7 @@
   },
   "super_bot": {
     "username": "almalaki_ichancy_bot",
-    "regex": "\\b[A-Z0-9]{10,15}\\b",
+    "regex": "\\b[a-zA-Z0-9]{10,15}\\b",
     "bot": "@almalaki_ichancy_bot"
   },
   "ichancy_diamond": {
