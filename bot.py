@@ -57,4 +57,55 @@ async def handle_user_commands(event):
 
     else:
         possible_channels = [name.strip() for name in message.split(',')]
-        if all(name in channels_config
+        if all(name in channels_config for name in possible_channels):
+            selected_channels = set(possible_channels)
+            await event.respond(f"تم اختيار القنوات: {', '.join(selected_channels)}")
+        else:
+            await event.respond("بعض القنوات غير صحيحة، تأكد من كتابتها بشكل دقيق.")
+
+@client.on(events.NewMessage)
+async def monitor_handler(event):
+    global monitoring_active
+    if not monitoring_active:
+        return
+
+    for channel_name in selected_channels:
+        config = channels_config[channel_name]
+        if event.chat.username != config["username"]:
+            continue
+
+        match = re.findall(config["regex"], event.message.message)
+        if match:
+            if config.get("pick_third") and len(match) >= 3:
+                code = match[2]
+            else:
+                code = match[0]
+
+            bot_username = config["bot"]
+
+            # إرسال الكود مباشرة للبوت
+            await client.send_message(bot_username, code)
+            print(f"تم إرسال الكود: {code} إلى {bot_username}")
+            break
+
+# Web service
+async def handle(request):
+    return web.Response(text="Bot is running!")
+
+app = web.Application()
+app.router.add_get("/", handle)
+
+async def start_all():
+    await client.start()
+    print("Bot is running...")
+    client_loop = asyncio.create_task(client.run_until_disconnected())
+
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, '0.0.0.0', 8081)
+    await site.start()
+    print("Web server is running on http://0.0.0.0:8081")
+    await client_loop
+
+if __name__ == "__main__":
+    asyncio.run(start_all())
