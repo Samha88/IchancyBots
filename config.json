@@ -14,5 +14,31 @@
     "username": "almalaki_ichancy_bot",
     "regex": "\\b[A-Z0-9]{10,15}\\b",
     "bot": "@almalaki_ichancy_bot"
+  },
+  "ichancy_diamond": {
+    "username": "diamondichancy",
+    "regex": "\\b[a-zA-Z0-9]{8,12}\\b",
+    "bot": "@DiamondIchancyBot"
+  },
+  "ichancy_dragon": {
+    "username": "ichancy_Bot_Dragon",
+    "regex": "\\b[a-zA-Z0-9]{5,}\\b",
+    "bot": "@ichancy_dragon_bot"
+  },
+  "captain_ichancy": {
+    "username": "captain_ichancy",
+    "regex": "\\b[a-zA-Z0-9]{6,12}\\b",
+    "bot": "@ichancy_captain_bot",
+    "pick_third": true
+  },
+  "ichancy_": {
+    "username": "basel2255",
+    "regex": "\\b[a-zA-Z0-9]{5,}\\b",
+    "bot": "@Ichancy_basel_bot"
+  },
+  "Ichancy_King": {
+    "username": "ichancyTheKing",
+    "regex": "\\b[a-zA-Z0-9]{6,12}\\b",
+    "bot": "@Ichancy_TheKingBot",
   }
 }
